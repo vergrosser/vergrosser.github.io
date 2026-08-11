@@ -1,0 +1,47 @@
+markdown:         kramdown
+highlighter:      rouge
+
+title:            Vergrosser
+tagline:          'My own website'
+description:      'Just for fun'
+url:              https://vergrosser.github.io
+baseurl:          ''
+
+author:
+  name:           'Arshiya Noorppor'
+telegram:            https://t.me/Mikrocontrollers
+
+paginate:         5
+
+plugins:
+  - jekyll-feed
+  - jekyll-gist
+  - jekyll-paginate
+  - jekyll-include-cache
+  - jemoji
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - Makefile
+  - README.md
+  - .gitignore
+
+permalink:        /:year/:month/:day/:title.html
+
+defaults:
+  - scope:
+      path: "_posts"
+      type: "posts"
+    values:
+      excerpt_separator:  <!--more-->
+      layout: post
+
+sidebar_home_link:  true
+
+disqus:
+  shortname:      hydeout
+
+google_analytics: UA-100461102-1
+
+repo: https://github.com/vergrosser
