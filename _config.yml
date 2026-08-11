@@ -1,4 +1,4 @@
-remote_theme: fongandrew/hydeout
+remote_theme: fongandrew/hydeout@jekyll-v4
 markdown:         kramdown
 highlighter:      rouge
 
@@ -20,6 +20,7 @@ plugins:
   - jekyll-paginate
   - jekyll-include-cache
   - jemoji
+  - jekyll-remote-theme
 
 exclude:
   - Gemfile
