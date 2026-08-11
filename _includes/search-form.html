@@ -1,17 +1,138 @@
-<form action="https://google.com/search" class="search-form">
-  <div class="search-row">
-    <input id="search-bar" type="search" name="q" />
+<div class="search-page">
 
-    {% comment %}
-      Hacky strip of protocol to the sitesearch value we pass to Google
-    {% endcomment %}
-    {% assign url = site.url | replace_first: 'https://', '' %}
-    {% assign url = url | replace_first: 'http://', '' %}
-    {% assign url = url | replace_first: 'spdy://', '' %}
-    {% assign url = url | replace_first: '//', '' %}
-    <input name="sitesearch" type="hidden"
-           value="{{ url }}{{ "/" | relative_url }}" />
+  <form id="search-form" class="search-form">
 
-    <input type="submit" value="Search" />
-  </div>
-</form>
+    <div class="search-row">
+
+      <input
+        id="search-bar"
+        type="search"
+        name="q"
+        placeholder="Search..."
+        autocomplete="off"
+      >
+
+      <input
+        name="sitesearch"
+        type="hidden"
+        value="{{ site.url }}{{ site.baseurl }}"
+      >
+
+      <input type="submit" value="Search">
+
+    </div>
+
+  </form>
+
+  <div id="search-results"></div>
+
+</div>
+
+
+<script>
+
+const posts = [
+
+  {% for post in site.posts %}
+
+  {
+    title: {{ post.title | jsonify }},
+    url: {{ post.url | relative_url | jsonify }}
+  }
+
+  {% unless forloop.last %},{% endunless %}
+
+  {% endfor %}
+
+];
+
+
+function searchPosts(query) {
+
+  query = query.toLowerCase().trim();
+
+  return posts.filter(post => {
+
+    return post.title
+      .toLowerCase()
+      .includes(query);
+
+  });
+
+}
+
+
+function displayResults(results) {
+
+  const container =
+    document.getElementById("search-results");
+
+  if (results.length === 0) {
+
+    container.innerHTML =
+      "<p>No results found.</p>";
+
+    return;
+
+  }
+
+  container.innerHTML = results
+    .map(post => `
+      <div class="search-result">
+
+        <h3>
+          <a href="${post.url}">
+            ${post.title}
+          </a>
+        </h3>
+
+      </div>
+    `)
+    .join("");
+
+}
+
+
+document
+  .getElementById("search-form")
+  .addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const query =
+      document.getElementById("search-bar").value;
+
+    if (!query.trim()) {
+
+      document.getElementById("search-results").innerHTML = "";
+
+      return;
+
+    }
+
+    const results =
+      searchPosts(query);
+
+    displayResults(results);
+
+});
+
+
+const params =
+  new URLSearchParams(window.location.search);
+
+const initialQuery =
+  params.get("q");
+
+if (initialQuery) {
+
+  document.getElementById("search-bar").value =
+    initialQuery;
+
+  displayResults(
+    searchPosts(initialQuery)
+  );
+
+}
+
+</script>
