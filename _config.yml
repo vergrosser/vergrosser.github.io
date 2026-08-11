@@ -41,8 +41,6 @@ defaults:
 
 sidebar_home_link:  true
 
-disqus:
-  shortname:      hydeout
 
 google_analytics: UA-100461102-1
 
